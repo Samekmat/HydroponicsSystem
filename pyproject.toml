@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "hydroponicssystemtask"
+version = "0.1.0"
+description = ""
+authors = ["Mateusz Samek <samekmat@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+django = "^5.0.6"
+django-environ = "^0.11.2"
+
+
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^3.7.1"
+bandit = "^1.7.8"
+black = "^24.4.2"
+ruff = "^0.4.6"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
