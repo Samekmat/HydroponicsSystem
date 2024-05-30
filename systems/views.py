@@ -18,4 +18,4 @@ class HydroponicsSystemDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        return self.queryset.filter(owner=self.request.owner)
+        return self.queryset.filter(owner=self.request.user)
