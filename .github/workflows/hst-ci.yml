@@ -1,0 +1,62 @@
+name: Hydroponics System CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_USER: ${{ vars.POSTGRES_USER }}
+          POSTGRES_DB: ${{ vars.POSTGRES_DB }}
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.12'
+
+    - name: Install Poetry
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install poetry
+
+    - name: Install dependencies
+      run: poetry install
+
+    - name: Set up PostgreSQL
+      run: |
+        sudo apt-get install postgresql-client
+        sleep 10 # Waiting for the database to start up
+        psql -h localhost -U postgres -c 'CREATE DATABASE test_db;'
+
+    - name: Run tests
+      run: poetry run python manage.py test
+
+    - name: Run Black
+      run: poetry run black --check .
+
+    - name: Run Bandit
+      run: poetry run bandit -r .
+
+    - name: Run Safety
+      run: poetry run safety check -r requirements.txt
+
+    - name: Run Ruff
+      run: poetry run ruff .
