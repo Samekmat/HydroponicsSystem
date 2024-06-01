@@ -1,7 +1,8 @@
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
-from systems.factories import UserFactory, HydroponicsSystemFactory
+from auth_app.factories import UserFactory
+from systems.factories import HydroponicsSystemFactory
 from systems.models import HydroponicsSystem
 
 
