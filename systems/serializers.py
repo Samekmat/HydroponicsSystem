@@ -6,4 +6,4 @@ class HydroponicsSystemSerializer(serializers.ModelSerializer):
     class Meta:
         model = HydroponicsSystem
         fields = ["owner", "name", "description"]
-        read_only_fields = ["owner"]
+        read_only_fields = ["owner", "created_at", "updated_at"]
