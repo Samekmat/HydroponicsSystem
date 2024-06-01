@@ -59,7 +59,7 @@ jobs:
         SECRET_KEY: ${{ secrets.SECRET_KEY }}
 
     - name: Run Black
-      run: poetry run black --check .
+      run: poetry run black --check --line-length 99 .
 
     - name: Run Bandit
       run: poetry run bandit -r .
