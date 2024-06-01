@@ -1,7 +1,12 @@
-from django.urls import path
-from systems.views import HydroponicsSystemListCreate, HydroponicsSystemDetail
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+
+from systems.views import HydroponicsSystemViewSet
+
+
+router = DefaultRouter()
+router.register(r"systems", HydroponicsSystemViewSet, basename="system")
 
 urlpatterns = [
-    path("systems/", HydroponicsSystemListCreate.as_view(), name="system-list-create"),
-    path("systems/<int:pk>/", HydroponicsSystemDetail.as_view(), name="system-detail"),
+    path("", include(router.urls)),
 ]
