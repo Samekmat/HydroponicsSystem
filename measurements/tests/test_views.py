@@ -26,7 +26,7 @@ class MeasurementListCreateTests(APITestCase):
         self.assertEqual(len(response.data), 2)
 
     def test_get_measurements_unauthorized(self):
-        self.client.force_authenticate(user=None)
+        self.client.logout()
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
