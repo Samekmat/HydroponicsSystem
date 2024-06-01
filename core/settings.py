@@ -28,9 +28,7 @@ INSTALLED_APPS = [
     "rest_framework",
 ]
 
-INSTALLED_EXTENSIONS = [
-    "systems",
-]
+INSTALLED_EXTENSIONS = ["systems", "measurements"]
 
 INSTALLED_APPS += INSTALLED_EXTENSIONS
 
