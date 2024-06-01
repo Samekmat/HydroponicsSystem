@@ -2,8 +2,9 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase, APIClient
 from measurements.models import Measurement
+from auth_app.factories import UserFactory
 from measurements.factories import MeasurementFactory
-from systems.factories import UserFactory, HydroponicsSystemFactory
+from systems.factories import HydroponicsSystemFactory
 
 
 class MeasurementListCreateTests(APITestCase):
