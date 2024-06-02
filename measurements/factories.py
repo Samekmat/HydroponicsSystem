@@ -1,3 +1,5 @@
+from typing import Type
+
 import factory
 from measurements.models import Measurement
 
@@ -6,7 +8,7 @@ from systems.factories import HydroponicsSystemFactory
 
 class MeasurementFactory(factory.django.DjangoModelFactory):
     class Meta:
-        model = Measurement
+        model: Type[Measurement] = Measurement
 
     system = factory.SubFactory(HydroponicsSystemFactory)
 

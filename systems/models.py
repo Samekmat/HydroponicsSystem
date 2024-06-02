@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django_stubs_ext.db.models import TypedModelMeta
 
 
 class HydroponicsSystem(models.Model):
@@ -11,8 +12,8 @@ class HydroponicsSystem(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
-    class Meta:
+    class Meta(TypedModelMeta):
         ordering = ["-created_at"]

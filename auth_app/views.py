@@ -1,10 +1,13 @@
+from typing import Type
+
 from django.contrib.auth.models import User
+from django.db.models import QuerySet
 from rest_framework import generics
 from rest_framework.permissions import AllowAny
 from auth_app.serializers import UserSerializer
 
 
 class RegisterView(generics.CreateAPIView):
-    queryset = User.objects.all()
+    queryset: QuerySet[User] = User.objects.all()
     permission_classes = (AllowAny,)
-    serializer_class = UserSerializer
+    serializer_class: Type[UserSerializer] = UserSerializer
