@@ -1,5 +1,6 @@
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
+from django_stubs_ext.db.models import TypedModelMeta
 
 from systems.models import HydroponicsSystem
 
@@ -40,5 +41,5 @@ class Measurement(models.Model):
     def __str__(self) -> str:
         return f"Measurement for {self.system} at {self.measured_at}"
 
-    class Meta:
-        ordering: list[str] = ["-measured_at"]
+    class Meta(TypedModelMeta):
+        ordering = ["-measured_at"]
