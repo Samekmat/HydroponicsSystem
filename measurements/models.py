@@ -5,35 +5,35 @@ from systems.models import HydroponicsSystem
 
 
 class Measurement(models.Model):
-    system: models.ForeignKey[HydroponicsSystem] = models.ForeignKey(
+    system = models.ForeignKey(
         HydroponicsSystem,
         related_name="measurements",
         on_delete=models.CASCADE,
         help_text="The hydroponics system associated with this measurement.",
     )
 
-    pH_data: models.DecimalField = models.DecimalField(
+    pH_data = models.DecimalField(
         max_digits=4,
         decimal_places=2,
         validators=[MinValueValidator(0), MaxValueValidator(14)],
         help_text="The pH level of the nutrient solution, should be between 0 and 14.",
     )
 
-    water_temperature: models.DecimalField = models.DecimalField(
+    water_temperature = models.DecimalField(
         max_digits=5,
         decimal_places=2,
         validators=[MinValueValidator(0), MaxValueValidator(45)],
         help_text="The water temperature in Celsius, should be between 0°C and 45°C.",
     )
 
-    TDS: models.DecimalField = models.DecimalField(
+    TDS = models.DecimalField(
         max_digits=6,
         decimal_places=2,
         validators=[MinValueValidator(0), MaxValueValidator(2000)],
         help_text="The Total Dissolved Solids (TDS) in ppm, should be between 0 and 2000 ppm.",
     )
 
-    measured_at: models.DateTimeField = models.DateTimeField(
+    measured_at = models.DateTimeField(
         auto_now_add=True, help_text="The date and time this measurement was taken."
     )
 
@@ -41,4 +41,4 @@ class Measurement(models.Model):
         return f"Measurement for {self.system} at {self.measured_at}"
 
     class Meta:
-        ordering: list = ["-measured_at"]
+        ordering: list[str] = ["-measured_at"]

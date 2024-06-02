@@ -1,3 +1,6 @@
+from typing import Type, List
+
+from django.db.models import QuerySet
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics, permissions
 from rest_framework.filters import OrderingFilter
@@ -34,14 +37,14 @@ class MeasurementListCreate(generics.ListCreateAPIView):
              to the authenticated user's systems.
     """
 
-    queryset = Measurement.objects.all()
-    serializer_class = MeasurementSerializer
-    permission_classes = [permissions.IsAuthenticated]
-    filter_backends = [DjangoFilterBackend, OrderingFilter]
-    filterset_class = MeasurementFilter
-    ordering_fields = ["measured_at", "pH_data", "water_temperature", "TDS"]
+    queryset: QuerySet[Measurement] = Measurement.objects.all()
+    serializer_class: Type[MeasurementSerializer] = MeasurementSerializer
+    permission_classes: List[Type[permissions.BasePermission]] = [permissions.IsAuthenticated]
+    filter_backends: List[Type[DjangoFilterBackend]] = [DjangoFilterBackend, OrderingFilter]
+    filterset_class: Type[MeasurementFilter] = MeasurementFilter
+    ordering_fields: List[str] = ["measured_at", "pH_data", "water_temperature", "TDS"]
 
-    def perform_create(self, serializer):
+    def perform_create(self, serializer: MeasurementSerializer) -> None:
         """
         Associates the measurement with a hydroponics system owned by the authenticated user.
 
@@ -55,7 +58,7 @@ class MeasurementListCreate(generics.ListCreateAPIView):
         system = HydroponicsSystem.objects.get(id=system_id, owner=self.request.user)
         serializer.save(system=system)
 
-    def get_queryset(self):
+    def get_queryset(self) -> QuerySet[Measurement]:
         """
         Filters the queryset to include only measurements belonging to the authenticated user.
 
