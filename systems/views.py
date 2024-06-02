@@ -1,3 +1,6 @@
+from typing import Union, Type
+
+from django.db.models import QuerySet
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import permissions, viewsets
 from rest_framework.filters import OrderingFilter
@@ -21,7 +24,9 @@ class HydroponicsSystemViewSet(viewsets.ModelViewSet):
     filterset_class = HydroponicsSystemFilter
     ordering_fields = ["name", "created_at", "updated_at"]
 
-    def get_serializer_class(self):
+    def get_serializer_class(
+        self,
+    ) -> Union[Type[HydroponicsSystemSerializer], Type[HydroponicsSystemDetailSerializer]]:
         """
         Return appropriate serializer class based on action.
         """
@@ -29,17 +34,17 @@ class HydroponicsSystemViewSet(viewsets.ModelViewSet):
             return HydroponicsSystemDetailSerializer
         return HydroponicsSystemSerializer
 
-    def get_queryset(self):
+    def get_queryset(self) -> QuerySet[HydroponicsSystem]:
         """
         Restricts the returned HydroponicsSystem instances to those owned by the current user.
 
         Returns:
-            QuerySet: A queryset of HydroponicsSystem instances filtered by
+            QuerySet[HydroponicsSystem]: A queryset of HydroponicsSystem instances filtered by
              the current authenticated user.
         """
         return HydroponicsSystem.objects.filter(owner=self.request.user)
 
-    def perform_create(self, serializer):
+    def perform_create(self, serializer: HydroponicsSystemSerializer) -> None:
         """
         Sets the owner of the HydroponicsSystem instance
          to the current authenticated user upon creation.
