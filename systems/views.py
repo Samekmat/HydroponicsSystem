@@ -1,9 +1,11 @@
-from typing import Union, Type
+from typing import Union, Type, Any
 
+from django.contrib.auth.models import User
 from django.db.models import QuerySet
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import permissions, viewsets
 from rest_framework.filters import OrderingFilter
+from rest_framework.serializers import BaseSerializer
 
 from systems.filters import HydroponicsSystemFilter
 from systems.models import HydroponicsSystem
@@ -42,9 +44,14 @@ class HydroponicsSystemViewSet(viewsets.ModelViewSet):
             QuerySet[HydroponicsSystem]: A queryset of HydroponicsSystem instances filtered by
              the current authenticated user.
         """
-        return HydroponicsSystem.objects.filter(owner=self.request.user)
+        user = self.request.user if isinstance(self.request.user, User) else None
 
-    def perform_create(self, serializer: HydroponicsSystemSerializer) -> None:
+        if user:
+            return HydroponicsSystem.objects.filter(owner=user)
+        else:
+            return HydroponicsSystem.objects.none()
+
+    def perform_create(self, serializer: BaseSerializer[Any]) -> None:
         """
         Sets the owner of the HydroponicsSystem instance
          to the current authenticated user upon creation.

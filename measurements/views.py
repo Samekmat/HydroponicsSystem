@@ -1,9 +1,12 @@
-from typing import Type, List
+from typing import Type, List, Any, Iterable, Union, Optional
 
+from django.contrib.auth.models import AnonymousUser, User
 from django.db.models import QuerySet
+from django.http import Http404
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics, permissions
 from rest_framework.filters import OrderingFilter
+from rest_framework.serializers import BaseSerializer
 
 from measurements.filters import MeasurementFilter
 from measurements.models import Measurement
@@ -42,9 +45,9 @@ class MeasurementListCreate(generics.ListCreateAPIView):
     permission_classes: List[Type[permissions.BasePermission]] = [permissions.IsAuthenticated]
     filter_backends: List[Type[DjangoFilterBackend]] = [DjangoFilterBackend, OrderingFilter]
     filterset_class: Type[MeasurementFilter] = MeasurementFilter
-    ordering_fields: List[str] = ["measured_at", "pH_data", "water_temperature", "TDS"]
+    ordering_fields: Iterable[str] = ["measured_at", "pH_data", "water_temperature", "TDS"]
 
-    def perform_create(self, serializer: MeasurementSerializer) -> None:
+    def perform_create(self, serializer: BaseSerializer[Any]) -> None:
         """
         Associates the measurement with a hydroponics system owned by the authenticated user.
 
@@ -54,8 +57,22 @@ class MeasurementListCreate(generics.ListCreateAPIView):
         Raises:
             Http404: If the system does not belong to the authenticated user.
         """
-        system_id = self.request.data.get("system")
-        system = HydroponicsSystem.objects.get(id=system_id, owner=self.request.user)
+        system_id: Optional[Union[str, int]] = self.request.data.get("system")
+
+        if system_id is None:
+            raise Http404("System ID must be provided")
+
+        try:
+            system_id = int(system_id)
+        except (ValueError, TypeError):
+            raise Http404("System ID must be a valid integer")
+
+        user: Union[User, AnonymousUser] = self.request.user
+
+        if not isinstance(user, User):
+            raise Http404("User must be authenticated")
+
+        system = HydroponicsSystem.objects.get(id=system_id, owner=user)
         serializer.save(system=system)
 
     def get_queryset(self) -> QuerySet[Measurement]:
