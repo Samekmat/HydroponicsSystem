@@ -1,4 +1,8 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics, permissions
+from rest_framework.filters import OrderingFilter
+
+from measurements.filters import MeasurementFilter
 from measurements.models import Measurement
 from measurements.serializers import MeasurementSerializer
 from systems.models import HydroponicsSystem
@@ -33,6 +37,9 @@ class MeasurementListCreate(generics.ListCreateAPIView):
     queryset = Measurement.objects.all()
     serializer_class = MeasurementSerializer
     permission_classes = [permissions.IsAuthenticated]
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filterset_class = MeasurementFilter
+    ordering_fields = ["measured_at", "pH_data", "water_temperature", "TDS"]
 
     def perform_create(self, serializer):
         """
