@@ -39,3 +39,6 @@ class Measurement(models.Model):
 
     def __str__(self):
         return f"Measurement for {self.system} at {self.measured_at}"
+
+    class Meta:
+        ordering = ["-measured_at"]
