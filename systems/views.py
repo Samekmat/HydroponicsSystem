@@ -4,7 +4,7 @@ from rest_framework.filters import OrderingFilter
 
 from systems.filters import HydroponicsSystemFilter
 from systems.models import HydroponicsSystem
-from systems.serializers import HydroponicsSystemSerializer
+from systems.serializers import HydroponicsSystemSerializer, HydroponicsSystemDetailSerializer
 
 
 class HydroponicsSystemViewSet(viewsets.ModelViewSet):
@@ -16,11 +16,18 @@ class HydroponicsSystemViewSet(viewsets.ModelViewSet):
     """
 
     queryset = HydroponicsSystem.objects.all()
-    serializer_class = HydroponicsSystemSerializer
     permission_classes = [permissions.IsAuthenticated]
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_class = HydroponicsSystemFilter
     ordering_fields = ["name", "created_at", "updated_at"]
+
+    def get_serializer_class(self):
+        """
+        Return appropriate serializer class based on action.
+        """
+        if self.action == "retrieve":
+            return HydroponicsSystemDetailSerializer
+        return HydroponicsSystemSerializer
 
     def get_queryset(self):
         """
