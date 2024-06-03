@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     "django_filters",
     "silk",
     "django_extensions",
+    "drf_yasg",
 ]
 
 if DEBUG and not is_running_tests():
