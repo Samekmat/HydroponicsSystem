@@ -28,7 +28,7 @@ class HydroponicsSystemViewSetTest(APITestCase):
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(HydroponicsSystem.objects.count(), 2)
-        self.assertEqual(HydroponicsSystem.objects.last().name, "New System")
+        self.assertEqual(HydroponicsSystem.objects.last().name, self.system.name)
 
     def test_retrieve_hydroponics_system(self):
         url = reverse("system-detail", args=[self.system.id])
