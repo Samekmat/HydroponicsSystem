@@ -37,7 +37,3 @@ if settings.DEBUG and not is_running_tests():
         path("__silk__/", include("silk.urls", namespace="silk")),
         path("__debug__/", include(debug_toolbar.urls)),
     ] + urlpatterns
-else:
-    urlpatterns = [
-        path("__silk__/", include("silk.urls", namespace="silk")),
-    ] + urlpatterns
