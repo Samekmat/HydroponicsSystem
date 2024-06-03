@@ -1,6 +1,6 @@
 from rest_framework.test import APITestCase
 
-from auth_app.serializers import UserSerializer
+from users.serializers import UserSerializer
 
 
 class UserSerializerTestCase(APITestCase):
