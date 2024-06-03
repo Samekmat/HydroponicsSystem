@@ -4,7 +4,7 @@ from pathlib import Path
 import environ
 
 
-env = environ.Env(DEBUG=(bool, True))
+env = environ.Env(DEBUG=(bool, False))
 environ.Env.read_env()
 
 
