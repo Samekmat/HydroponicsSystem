@@ -1,3 +1,4 @@
+import sys
 from datetime import timedelta
 from pathlib import Path
 import environ
@@ -19,6 +20,10 @@ DEBUG = env("DEBUG")
 ALLOWED_HOSTS: list[str] = []
 
 
+def is_running_tests():
+    return "test" in sys.argv
+
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -30,9 +35,11 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "django_filters",
     "silk",
-    "debug_toolbar",
     "django_extensions",
 ]
+
+if DEBUG and not is_running_tests():
+    INSTALLED_APPS += ["debug_toolbar"]
 
 INSTALLED_EXTENSIONS = ["systems", "measurements", "users"]
 
@@ -47,8 +54,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
-    "silk.middleware.SilkyMiddleware",
 ]
 
 
@@ -56,15 +61,23 @@ INTERNAL_IPS = [
     "127.0.0.1",
 ]
 
-DEBUG_TOOLBAR_CONFIG = {
-    "SHOW_TOOLBAR_CALLBACK": lambda request: True,
-}
+if DEBUG and not is_running_tests():
+    MIDDLEWARE = ["debug_toolbar.middleware.DebugToolbarMiddleware"] + MIDDLEWARE
+    INTERNAL_IPS = ["127.0.0.1"]
+    DEBUG_TOOLBAR_CONFIG = {
+        "SHOW_TOOLBAR_CALLBACK": lambda request: True,
+    }
+else:
+    DEBUG_TOOLBAR_CONFIG = {
+        "IS_RUNNING_TESTS": False,
+    }
+
+MIDDLEWARE += ["silk.middleware.SilkyMiddleware"]
 
 SILKY_PYTHON_PROFILER = True
 SILKY_AUTHENTICATION = True
 SILKY_AUTHORISATION = True
 SILKY_META = True
-
 
 ROOT_URLCONF = "core.urls"
 
