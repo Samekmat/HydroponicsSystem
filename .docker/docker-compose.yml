@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  web:
+    build:
+      context: ..
+      dockerfile: .docker/Dockerfile
+    command:
+      sh -c "poetry run python manage.py migrate &&
+      poetry run python manage.py runserver 0.0.0.0:8000"
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/hydroponics
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres", "-h", "db", "-p", "5432", "-d", "hydroponics"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    env_file:
+      - ../core/.env
+    volumes:
+      - ..:/code
+  db:
+    image: postgres:alpine
+    env_file:
+      - ../core/.env
