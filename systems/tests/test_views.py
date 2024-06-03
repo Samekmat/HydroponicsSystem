@@ -3,7 +3,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 from rest_framework_simplejwt.tokens import AccessToken
 
-from auth_app.factories import UserFactory
+from users.factories import UserFactory
 from systems.factories import HydroponicsSystemFactory
 from systems.models import HydroponicsSystem
 
