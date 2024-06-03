@@ -89,13 +89,38 @@
 <summary>Expand info</summary>
 
 1. Typing and type annotations have been utilized for improved code clarity and maintainability. Django and Django REST Framework stubs have been included for better type checking with MyPy.
-* MyPy can be used to check the code for type errors.
-Run MyPy with the following command:
+MyPy can be used to check the code for type errors.</br>
+`Run MyPy with the following command:`
    ```bash
       poetry run mypy .
    ```
 
 2. Pre-commit hooks have been set up using black, ruff, bandit, and a bunch of hooks for code formatting and security checks.
+
 3. Continuous Integration (CI) for the project is managed through GitHub Actions workflow. It includes steps for running tests, code quality checks, and ensuring compliance with coding standards.
+
+4. Django-filters are added, allowing for pagination, filtering, and sorting of responses by adding parameters in the request:
+   - **Pagination:** `url/?page=page_num`
+   - **Filter:** `url/?field=field_value`
+   - **Sort:** `url/?ordering=field/-field`
+
+   ### Available Filters
+
+   #### Systems App Filter Fields
+   - `name`
+   - `created_at`
+   - `updated_at`
+
+   #### Measurements App Filter Fields
+   - `system`
+   - `measured_at`
+   - `pH_data`
+   - `water_temperature`
+   - `TDS`
+
+   ### Example `curl` Request
+   ```bash
+   curl -X GET "http://localhost/api/v1/systems/?page=1&name=example_system_name&ordering=-created_at"
+   ```
 
 </details>
