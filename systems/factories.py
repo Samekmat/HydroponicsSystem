@@ -4,7 +4,7 @@ import factory
 
 from systems.models import HydroponicsSystem
 
-from auth_app.factories import UserFactory
+from users.factories import UserFactory
 
 
 class HydroponicsSystemFactory(factory.django.DjangoModelFactory):

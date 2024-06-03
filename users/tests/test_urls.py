@@ -1,6 +1,6 @@
 from django.test import SimpleTestCase
 from django.urls import reverse, resolve
-from auth_app.views import RegisterView
+from users.views import RegisterView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 

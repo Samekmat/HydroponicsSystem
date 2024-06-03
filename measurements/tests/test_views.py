@@ -4,7 +4,7 @@ from rest_framework.test import APITestCase, APIClient
 from rest_framework_simplejwt.tokens import AccessToken
 
 from measurements.models import Measurement
-from auth_app.factories import UserFactory
+from users.factories import UserFactory
 from measurements.factories import MeasurementFactory
 from systems.factories import HydroponicsSystemFactory
 
