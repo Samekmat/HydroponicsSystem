@@ -48,8 +48,6 @@ class HydroponicsSystemViewSet(viewsets.ModelViewSet):
 
         if user:
             return HydroponicsSystem.objects.filter(owner=user)
-        else:
-            return HydroponicsSystem.objects.none()
 
     def perform_create(self, serializer: BaseSerializer[Any]) -> None:
         """
