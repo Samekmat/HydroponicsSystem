@@ -51,11 +51,11 @@ jobs:
       run: |
         poetry run python manage.py test
       env:
-        DB_NAME: ${{ vars.POSTGRES_DB }}
-        DB_USER: ${{ vars.POSTGRES_USER }}
-        DB_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-        DB_HOST: ${{ secrets.POSTGRES_HOST }}
-        DB_PORT: ${{ vars.POSTGRES_PORT }}
+        POSTGRES_DB: ${{ vars.POSTGRES_DB }}
+        POSTGRES_USER: ${{ vars.POSTGRES_USER }}
+        POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+        POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+        POSTGRES_PORT: ${{ vars.POSTGRES_PORT }}
         SECRET_KEY: ${{ secrets.SECRET_KEY }}
 
     - name: Run Black
