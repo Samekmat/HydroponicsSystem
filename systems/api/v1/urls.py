@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
-from systems.views import HydroponicsSystemViewSet
+from systems.api.v1.views import HydroponicsSystemViewSet
 
 
 router = DefaultRouter()

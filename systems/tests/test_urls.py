@@ -1,6 +1,6 @@
 from django.test import SimpleTestCase
 from django.urls import reverse, resolve
-from systems.views import HydroponicsSystemViewSet
+from systems.api.v1.views import HydroponicsSystemViewSet
 
 
 class UrlsTest(SimpleTestCase):

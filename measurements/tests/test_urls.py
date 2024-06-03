@@ -1,7 +1,7 @@
 from django.test import SimpleTestCase
 from django.urls import reverse, resolve
 
-from measurements.views import MeasurementListCreate
+from measurements.api.v1.views import MeasurementListCreate
 
 
 class MeasurementUrlTest(SimpleTestCase):
